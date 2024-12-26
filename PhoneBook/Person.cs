@@ -1,18 +1,10 @@
 ﻿namespace C_Project1
 {
-    public class Person
+    public class Person(string name, string surname, string phoneNumber, string? email = null)
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string PhoneNumber { get; set; }
-        public string? Email { get; set; }
-
-        public Person(string name, string surname, string phoneNumber, string? email = null)
-        {
-            Name = name;
-            Surname = surname;
-            PhoneNumber = phoneNumber;
-            Email = email;
-        }
+        public string Name { get; set; } = name;
+        public string Surname { get; set; } = surname;
+        public string PhoneNumber { get; set; } = phoneNumber;
+        public string? Email { get; set; } = email;
     }
 }

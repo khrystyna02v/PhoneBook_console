@@ -118,7 +118,7 @@ namespace C_Project1
             SortBook(phoneBook);
             Console.WriteLine("Phone Book:");
             var counter = 1;
-            foreach (Person person in phoneBook)
+            foreach (var person in phoneBook)
             {
                 if (person.Email != null)
                 {
@@ -253,7 +253,7 @@ namespace C_Project1
             string beginning = InputPartOfName("beginning");
             Console.WriteLine($"Names starting with \"{beginning}\": ");
             var counter = 1;
-            foreach (Person person in phoneBook)
+            foreach (var person in phoneBook)
             {
                 if (person.Name.Substring(0, beginning.Length) == beginning)
                 {
@@ -274,7 +274,7 @@ namespace C_Project1
             }
             Console.WriteLine($"Surnames starting with \"{beginning}\": ");
             counter = 1;
-            foreach (Person person in phoneBook)
+            foreach (var person in phoneBook)
             {
                 if (person.Surname.Substring(0, beginning.Length) == beginning)
                 {

@@ -9,12 +9,13 @@
             if (!File.Exists(source))
             {
                 using (File.Create(source)) { }
+                return phoneBook;
             }
-            using (FileStream file = File.OpenRead(source))
+            using (var file = File.OpenRead(source))
             {
-                byte[] array = new byte[file.Length];
+                var array = new byte[file.Length];
                 file.Read(array);
-                string textFromFile = System.Text.Encoding.Default.GetString(array);
+                var textFromFile = System.Text.Encoding.Default.GetString(array);
                 var data = textFromFile.Split(',', '\n');
                 for (var i = fields; i + fields - 1 < data.Length; i += fields)
                 {
