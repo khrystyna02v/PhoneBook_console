@@ -2,45 +2,17 @@
 {
     public class Person
     {
-        private string Name;
-        private string Surname;
-        private string PhoneNumber;
-        private string Email;
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string PhoneNumber { get; set; }
+        public string? Email { get; set; }
 
-        public Person(string name, string surname, string phoneNumber, string email = null)
+        public Person(string name, string surname, string phoneNumber, string? email = null)
         {
-            this.Name = name;
-            this.Surname = surname;
-            this.PhoneNumber = phoneNumber;
-            if (Functions.CheckEmail(email))
-            {
-                this.Email = email;
-            }
-            else
-            {
-                this.Email = null;
-            }
+            Name = name;
+            Surname = surname;
+            PhoneNumber = phoneNumber;
+            Email = email;
         }
-
-        public string name
-        {
-            get { return Name; }
-            set { Name = value; }
-        }
-        public string surname
-        {
-            get { return Surname; }
-            set { Surname = value;}
-        }
-        public string phonenumber
-        {
-            get { return PhoneNumber; }
-            set { PhoneNumber = value;}
-        }
-        public string email
-        {
-            get { if (Email != null) { return ", " + Email; } else { return null; } }
-            set { Email = value; }
-        }  
     }
 }

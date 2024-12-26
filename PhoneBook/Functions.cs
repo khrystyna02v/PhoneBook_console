@@ -4,33 +4,35 @@ namespace C_Project1
 {
     public class Functions
     {
-        
-        public static bool CheckPhoneNumber(string Number)
+        public static bool CheckPhoneNumber(string? number)
         {
-            Match match = Regex.Match(Number, @"^0[0-9]{9}$");
+            if (number == null) return false;
+            var match = Regex.Match(number, @"^0[0-9]{9}$");
             return match.Success;
         }
-        public static bool CheckName(string Name)
+        public static bool CheckName(string? name)
         {
-            Match match = Regex.Match(Name, @"^[A-Z]([a-z]+)((\-[A-Z][a-z]+)*)$");
+            if (name == null) return false;
+            var match = Regex.Match(name, @"^[A-Z]([a-z]+)((\-[A-Z][a-z]+)*)$");
             return match.Success;
         }
-        public static bool CheckPartOfName(string Name)
+        public static bool CheckPartOfName(string? name)
         {
-            Match match = Regex.Match(Name, @"^[A-Z]([a-z]*)((\-[A-Z][a-z]+)*)$");
+            if (name == null) return false;
+            var match = Regex.Match(name, @"^[A-Z]([a-z]*)((\-[A-Z][a-z]+)*)$");
             return match.Success;
         }
-        public static bool CheckEmail(string Email)
+        public static bool CheckEmail(string? email)
         {
-            if (Email == null) return false;
-            Match match = Regex.Match(Email, @"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9\-]+)\.([a-z]{2,5})(\s*)$");
+            if (email == null) return false;
+            var match = Regex.Match(email, @"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9\-]+)\.([a-z]{2,5})(\s*)$");
             return match.Success;
         }
 
-        public static string InputName(string adding = null)
+        public static string InputName(string? adding = null)
         {
             Console.Write($"Enter {adding}name: ");
-            string name = Console.ReadLine();
+            var name = Console.ReadLine();
             while (!CheckName(name))
             {
                 Console.WriteLine("Incorrect text format! Try again.");
@@ -39,14 +41,14 @@ namespace C_Project1
             }
             return name;
         }
-        public static string InputSurname(string adding = null)
+        public static string InputSurname(string? adding = null)
         {
             return InputName(adding + "sur");
         }
-        public static string InputPhoneNumber(string adding = null)
+        public static string InputPhoneNumber(string? adding = null)
         {
             Console.Write($"Enter {adding}phone number: ");
-            string number = Console.ReadLine();
+            var number = Console.ReadLine();
             while (!CheckPhoneNumber(number))
             {
                 Console.WriteLine("It is not a phone number! Try again.");
@@ -55,10 +57,10 @@ namespace C_Project1
             }
             return number;
         }
-        public static string InputEmail()
+        public static string? InputEmail()
         {
             Console.Write($"Enter email (not required): ");
-            string email = Console.ReadLine();
+            var email = Console.ReadLine();
             if (!CheckEmail(email))
             {
                 Console.WriteLine("Can't add this email address");
@@ -69,7 +71,7 @@ namespace C_Project1
         public static string InputEmail(string adding)
         {
             Console.Write($"Enter {adding}email: ");
-            string email = Console.ReadLine();
+            var email = Console.ReadLine();
             while (!CheckEmail(email))
             {
                 Console.WriteLine("Incorrect email address! Try again.");
@@ -81,7 +83,7 @@ namespace C_Project1
         public static string InputPartOfName(string adding)
         {
             Console.WriteLine($"Enter {adding} of name/surname: ");
-            string part = Console.ReadLine();
+            var part = Console.ReadLine();
             while (!CheckPartOfName(part))
             {
                 Console.WriteLine("Incorrect text format. Try again");
@@ -91,50 +93,62 @@ namespace C_Project1
             return part;
         }
 
-
-
-
-
-
-        public static void SortBook(List<Person> PhoneBook)
+        public static void SortBook(List<Person> phoneBook)
         {
-            PhoneBook.Sort((person1, person2) => (person1.name + " " + person1.surname).CompareTo(person2.name + " " + person2.surname));
+            phoneBook.Sort((person1, person2) => (person1.Name + " " + person1.Surname).CompareTo(person2.Name + " " + person2.Surname));
         }
-        public static bool IsInBook(List<Person> PhoneBook, string Name, string Surname)
+
+        public static bool IsInBook(List<Person> phoneBook, string? name, string? surname)
         {
-            bool found = false;
-            foreach (var person in PhoneBook)
+            var found = false;
+            foreach (var person in phoneBook)
             {
-                if (Name == person.name && Surname == person.surname) { found = true; break; }
+                if (name == person.Name && surname == person.Surname) { found = true; break; }
             }
             return found;
         }
-        public static Person Find(List<Person> PhoneBook, string Name, string Surname)
+
+        public static Person? Find(List<Person> phoneBook, string? name, string? surname)
         {
-            return PhoneBook.Find(person => person.name == Name && person.surname == Surname);
+            return phoneBook.Find(person => person.Name == name && person.Surname == surname);
         }
 
-        public static void PrintBook(List<Person> PhoneBook)
+        public static void PrintBook(List<Person> phoneBook)
         {
-            SortBook(PhoneBook);
+            SortBook(phoneBook);
             Console.WriteLine("Phone Book:");
-            int counter = 1;
-            foreach (Person person in PhoneBook)
+            var counter = 1;
+            foreach (Person person in phoneBook)
             {
-                Console.WriteLine($"{counter}) {person.name} {person.surname} - {person.phonenumber}{person.email}");
+                if (person.Email != null)
+                {
+                    Console.WriteLine($"{counter}) {person.Name} {person.Surname} - {person.PhoneNumber}, {person.Email}");
+                }
+                else
+                {
+                    Console.WriteLine($"{counter}) {person.Name} {person.Surname} - {person.PhoneNumber}");
+                }
                 counter++;
             }
         }
-        public static void AddPerson(List<Person> PhoneBook)
+
+        public static void AddPerson(List<Person> phoneBook)
         {
             Console.WriteLine("Adding new person to the phone book:");
-            string name = InputName();
-            string surname = InputSurname();
-            if (!IsInBook(PhoneBook, name, surname))
+            var name = InputName();
+            var surname = InputSurname();
+            if (!IsInBook(phoneBook, name, surname))
             {
-                string number = InputPhoneNumber();
-                string email = InputEmail();
-                PhoneBook.Add(new Person(name, surname, number, email));
+                var number = InputPhoneNumber();
+                var email = InputEmail();
+                if (CheckEmail(email))
+                {
+                    phoneBook.Add(new Person(name, surname, number, email));
+                }
+                else
+                {
+                    phoneBook.Add(new Person(name, surname, number));
+                }
                 Console.WriteLine($"Successfully added to the phone book!");
             }
             else
@@ -142,16 +156,17 @@ namespace C_Project1
                 Console.WriteLine("This person is alredy in the book");
             }
         }
-        public static void ChangeNumber(List<Person> PhoneBook)
+
+        public static void ChangeNumber(List<Person> phoneBook)
         {
             Console.WriteLine("Changing a phone number:");
-            string name = InputName();
-            string surname = InputSurname();
-            Person foundPerson = Find(PhoneBook, name, surname);
-            if (foundPerson!= null)
+            var name = InputName();
+            var surname = InputSurname();
+            var foundPerson = Find(phoneBook, name, surname);
+            if (foundPerson != null)
             {
-                string number = InputPhoneNumber("new ");
-                foundPerson.phonenumber = number;
+                var number = InputPhoneNumber("new ");
+                foundPerson.PhoneNumber = number;
                 Console.WriteLine($"Phone number successfully changed!");
             }
             else
@@ -159,15 +174,15 @@ namespace C_Project1
                 Console.WriteLine($"{name} {surname} is not in the book");
             }
         }
-        public static void RemovePerson(List<Person> PhoneBook)
+        public static void RemovePerson(List<Person> phoneBook)
         {
             Console.WriteLine("Removing person from the phone book:");
-            string name = InputName();
-            string surname = InputSurname();
-            Person foundPerson = Find(PhoneBook, name, surname);
-            if (foundPerson!= null)
+            var name = InputName();
+            var surname = InputSurname();
+            var foundPerson = Find(phoneBook, name, surname);
+            if (foundPerson != null)
             {
-                PhoneBook.Remove(foundPerson);
+                phoneBook.Remove(foundPerson);
                 Console.WriteLine($"{name} {surname} successfully removed from the book!");
             }
             else
@@ -175,18 +190,18 @@ namespace C_Project1
                 Console.WriteLine($"{name} {surname} is not in the book");
             }
         }
-        public static void RenamePerson(List<Person> PhoneBook)
+        public static void RenamePerson(List<Person> phoneBook)
         {
             Console.WriteLine("Renaming person:");
-            string name = InputName();
-            string surname = InputSurname();
-            Person foundPerson = Find(PhoneBook, name, surname);
+            var name = InputName();
+            var surname = InputSurname();
+            var foundPerson = Find(phoneBook, name, surname);
             if (foundPerson != null)
             {
-                string newName = InputName("new ");
-                string newSurname = InputSurname("new ");
-                foundPerson.name = newName;
-                foundPerson.surname = newSurname;
+                var newName = InputName("new ");
+                var newSurname = InputSurname("new ");
+                foundPerson.Name = newName;
+                foundPerson.Surname = newSurname;
                 Console.WriteLine($"Successfully renamed!");
             }
             else
@@ -194,16 +209,16 @@ namespace C_Project1
                 Console.WriteLine($"{name} {surname} is not in the book");
             }
         }
-        public static void ChangeEmail(List<Person> PhoneBook)
+        public static void ChangeEmail(List<Person> phoneBook)
         {
             Console.WriteLine("Adding/changing email:");
-            string name = InputName();
-            string surname = InputSurname();
-            Person foundPerson = Find(PhoneBook, name, surname);
+            var name = InputName();
+            var surname = InputSurname();
+            var foundPerson = Find(phoneBook, name, surname);
             if (foundPerson != null)
             {
-                string email = InputEmail("new ");
-                foundPerson.email = email;
+                var email = InputEmail("new ");
+                foundPerson.Email = email;
                 Console.WriteLine($"Successfully changed email!");
             }
             else
@@ -211,18 +226,18 @@ namespace C_Project1
                 Console.WriteLine($"{name} {surname} is not in the book");
             }
         }
-        public static void DeleteEmail(List<Person> PhoneBook)
+        public static void DeleteEmail(List<Person> phoneBook)
         {
             Console.WriteLine("Deleting email:");
-            string name = InputName();
-            string surname = InputSurname();
-            Person foundPerson = Find(PhoneBook, name, surname);
+            var name = InputName();
+            var surname = InputSurname();
+            var foundPerson = Find(phoneBook, name, surname);
             if (foundPerson != null)
             {
-                if (foundPerson.email == null) Console.WriteLine($"{name} {surname} does not have an email address");
+                if (foundPerson.Email == null) Console.WriteLine($"{name} {surname} does not have an email address");
                 else
                 {
-                    foundPerson.email = null;
+                    foundPerson.Email = null;
                     Console.WriteLine($"Email successfully removed!");
                 }
             }
@@ -231,31 +246,46 @@ namespace C_Project1
                 Console.WriteLine($"{name} {surname} is not in the book");
             }
         }
-        public static void FirstLetter(List<Person> PhoneBook)
+        public static void FirstLetter(List<Person> phoneBook)
         {
-            SortBook(PhoneBook);
+            SortBook(phoneBook);
             Console.WriteLine("Finding by first letter or beginning of name or surname:");
             string beginning = InputPartOfName("beginning");
             Console.WriteLine($"Names starting with \"{beginning}\": ");
-            int counter = 1;
-            foreach (Person person in PhoneBook)
+            var counter = 1;
+            foreach (Person person in phoneBook)
             {
-                if (person.name.Substring(0, beginning.Length) == beginning)
+                if (person.Name.Substring(0, beginning.Length) == beginning)
                 {
-                    Console.WriteLine($"{counter}) {person.name} {person.surname} - {person.phonenumber}{person.email}");
+                    if (person.Email != null)
+                    {
+                        Console.WriteLine($"{counter}) {person.Name} {person.Surname} - {person.PhoneNumber}, {person.Email}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{counter}) {person.Name} {person.Surname} - {person.PhoneNumber}");
+                    }
                     counter++;
                 }
             }
-            if (counter == 1) {
+            if (counter == 1)
+            {
                 Console.WriteLine("Nothing found.");
             }
             Console.WriteLine($"Surnames starting with \"{beginning}\": ");
             counter = 1;
-            foreach (Person person in PhoneBook)
+            foreach (Person person in phoneBook)
             {
-                if (person.surname.Substring(0, beginning.Length) == beginning)
+                if (person.Surname.Substring(0, beginning.Length) == beginning)
                 {
-                    Console.WriteLine($"{counter}) {person.name} {person.surname} - {person.phonenumber}{person.email}");
+                    if (person.Email != null)
+                    {
+                        Console.WriteLine($"{counter}) {person.Name} {person.Surname} - {person.PhoneNumber}, {person.Email}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{counter}) {person.Name} {person.Surname} - {person.PhoneNumber}");
+                    }
                     counter++;
                 }
             }
