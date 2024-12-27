@@ -1,4 +1,4 @@
-﻿namespace C_Project1
+﻿namespace PhoneBook
 {
     public class Person(string name, string surname, string phoneNumber, string? email = null)
     {

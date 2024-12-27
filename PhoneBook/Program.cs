@@ -1,10 +1,13 @@
-﻿namespace C_Project1
+﻿using System.Diagnostics;
+
+namespace PhoneBook
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            var phoneBook = CSV_Reader.Read("Book1.csv");
+            string csvSource = "../../../Book1.csv";
+            var phoneBook = CsvManager.Read(csvSource);
             bool exit = false;
             while (!exit)
             {
@@ -24,12 +27,12 @@
                 switch (choice)
                 {
                     case "1": Functions.PrintBook(phoneBook); break;
-                    case "2": Functions.AddPerson(phoneBook); break;
-                    case "3": Functions.ChangeNumber(phoneBook); break;
-                    case "4": Functions.RemovePerson(phoneBook); break;
-                    case "5": Functions.RenamePerson(phoneBook); break;
-                    case "6": Functions.ChangeEmail(phoneBook); break;
-                    case "7": Functions.DeleteEmail(phoneBook); break;
+                    case "2": Functions.AddPerson(phoneBook, csvSource); break;
+                    case "3": Functions.ChangeNumber(phoneBook, csvSource); break;
+                    case "4": Functions.RemovePerson(phoneBook, csvSource); break;
+                    case "5": Functions.RenamePerson(phoneBook, csvSource); break;
+                    case "6": Functions.ChangeEmail(phoneBook, csvSource); break;
+                    case "7": Functions.DeleteEmail(phoneBook, csvSource); break;
                     case "8": Functions.FirstLetter(phoneBook); break;
                     case "9": exit = true; break;
                     default: Console.WriteLine("Incorrect choice format."); break;
