@@ -2,7 +2,7 @@
 
 namespace PhoneBook
 {
-    public class Functions
+    public static class Functions
     {
         private static bool CheckPhoneNumber(string? number)
         {
@@ -108,7 +108,7 @@ namespace PhoneBook
             return found;
         }
 
-        private static Person? Find(List<Person> phoneBook, string? name, string? surname)
+        public static Person? Find(List<Person> phoneBook, string? name, string? surname)
         {
             return phoneBook.Find(person => person.Name == name && person.Surname == surname);
         }
@@ -121,7 +121,7 @@ namespace PhoneBook
             foreach (var person in phoneBook) Console.WriteLine($"{counter++}) {person.ConsoleOutput()}");
         }
 
-        public static void AddPerson(List<Person> phoneBook, string source)
+        public static void AddPerson(this IManager manager, List<Person> phoneBook)
         {
             Console.WriteLine("Adding new person to the phone book:");
             var name = InputName();
@@ -131,7 +131,7 @@ namespace PhoneBook
                 var number = InputPhoneNumber();
                 var email = InputEmail();
                 phoneBook.Add(new Person(name, surname, number, email));
-                CsvManager.Add(source, new Person(name, surname, number, email));
+                manager.Add(new Person(name, surname, number, email));
                 Console.WriteLine($"Successfully added to the phone book!");
             }
             else
@@ -140,7 +140,7 @@ namespace PhoneBook
             }
         }
 
-        public static void ChangeNumber(List<Person> phoneBook, string source)
+        public static void ChangeNumber(this IManager manager, List<Person> phoneBook)
         {
             Console.WriteLine("Changing a phone number:");
             var name = InputName();
@@ -152,7 +152,7 @@ namespace PhoneBook
                 if (foundPerson.PhoneNumber != number)
                 {
                     foundPerson.PhoneNumber = number;
-                    CsvManager.Rewrite(source, phoneBook);
+                    manager.Rewrite(phoneBook);
                     Console.WriteLine($"Phone number successfully changed!");
                 }
                 else
@@ -165,7 +165,7 @@ namespace PhoneBook
                 Console.WriteLine($"{name} {surname} is not in the book");
             }
         }
-        public static void RemovePerson(List<Person> phoneBook, string source)
+        public static void RemovePerson(this IManager manager, List<Person> phoneBook)
         {
             Console.WriteLine("Removing person from the phone book:");
             var name = InputName();
@@ -174,7 +174,7 @@ namespace PhoneBook
             if (foundPerson != null)
             {
                 phoneBook.Remove(foundPerson);
-                CsvManager.Rewrite(source, phoneBook);
+                manager.Rewrite(phoneBook);
                 Console.WriteLine($"{name} {surname} successfully removed from the book!");
             }
             else
@@ -182,7 +182,7 @@ namespace PhoneBook
                 Console.WriteLine($"{name} {surname} is not in the book");
             }
         }
-        public static void RenamePerson(List<Person> phoneBook, string source)
+        public static void RenamePerson(this IManager manager, List<Person> phoneBook)
         {
             Console.WriteLine("Renaming person:");
             var name = InputName();
@@ -196,7 +196,7 @@ namespace PhoneBook
                 {
                     foundPerson.Name = newName;
                     foundPerson.Surname = newSurname;
-                    CsvManager.Rewrite(source, phoneBook);
+                    manager.Rewrite(phoneBook);
                     Console.WriteLine("Successfully renamed!");
                 }
                 else
@@ -209,7 +209,7 @@ namespace PhoneBook
                 Console.WriteLine($"{name} {surname} is not in the book");
             }
         }
-        public static void ChangeEmail(List<Person> phoneBook, string source)
+        public static void ChangeEmail(this IManager manager, List<Person> phoneBook)
         {
             Console.WriteLine("Adding/changing email:");
             var name = InputName();
@@ -221,7 +221,7 @@ namespace PhoneBook
                 if (foundPerson.Email != email)
                 {
                     foundPerson.Email = email;
-                    CsvManager.Rewrite(source, phoneBook);
+                    manager.Rewrite(phoneBook);
                     Console.WriteLine("Successfully changed email!");
                 }
                 else
@@ -234,7 +234,7 @@ namespace PhoneBook
                 Console.WriteLine($"{name} {surname} is not in the book");
             }
         }
-        public static void DeleteEmail(List<Person> phoneBook, string source)
+        public static void DeleteEmail(this IManager manager, List<Person> phoneBook)
         {
             Console.WriteLine("Deleting email:");
             var name = InputName();
@@ -249,7 +249,7 @@ namespace PhoneBook
                 else
                 {
                     foundPerson.Email = null;
-                    CsvManager.Rewrite(source, phoneBook);
+                    manager.Rewrite(phoneBook);
                     Console.WriteLine($"Email successfully removed!");
                 }
             }

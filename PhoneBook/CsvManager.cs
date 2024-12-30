@@ -1,16 +1,15 @@
-﻿namespace PhoneBook
+﻿using System.Xml.Linq;
+
+namespace PhoneBook
 {
-    public static class CsvManager
+    public class CsvManager: CommonManagerFunctions, IManager
     {
-        public static List<Person> Read(string source)
+        public CsvManager(string _source = "../../../Book1.csv") : base(_source) { }
+        public List<Person> Read()
         {
             var phoneBook = new List<Person>();
-            if (!File.Exists(source))
-            {
-                using (File.Create(source)) { }
-                return phoneBook;
-            }
-            using (var file = File.OpenRead(source))
+            CreateFileIfNotExists();
+            using (var file = File.OpenRead(_source))
             {
                 var array = new byte[file.Length];
                 file.Read(array);
@@ -34,18 +33,18 @@
             }
             return phoneBook;
         }
-        public static void Add (string source, Person person)
+        public void Add (Person person)
         {
             var text = person.CsvOutput();
-            using (var file = new StreamWriter(source, append: true, encoding: System.Text.Encoding.UTF8))
+            using (var file = new StreamWriter(_source, append: true, encoding: System.Text.Encoding.UTF8))
             {
                 file.WriteLine(text);
             }
         }
 
-        public static void Rewrite (string source, List<Person> phoneBook)
+        public void Rewrite (List<Person> phoneBook)
         {
-            using (var file = new StreamWriter(source, append: false, encoding: System.Text.Encoding.UTF8))
+            using (var file = new StreamWriter(_source, append: false, encoding: System.Text.Encoding.UTF8))
             {
                 foreach (var person in phoneBook)
                 {
