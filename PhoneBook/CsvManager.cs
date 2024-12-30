@@ -1,8 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
-
-namespace PhoneBook
+﻿namespace PhoneBook
 {
     public static class CsvManager
     {

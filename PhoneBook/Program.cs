@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace PhoneBook
+﻿namespace PhoneBook
 {
     internal class Program
     {

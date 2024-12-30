@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace PhoneBook
+﻿namespace PhoneBook
 {
     public static class PersonOutput
     {
