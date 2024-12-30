@@ -1,10 +1,30 @@
-﻿namespace C_Project1
+﻿namespace PhoneBook
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            var phoneBook = CSV_Reader.Read("Book1.csv");
+            Console.WriteLine("Select which file to use:");
+            Console.WriteLine("1 - Csv file");
+            Console.WriteLine("2 - Json file");
+            IManager manager;
+            bool selected = false;
+            bool csv = false;
+            while (!selected)
+            {
+                string choice = Console.ReadLine().Replace(" ", "");
+                switch (choice)
+                {
+                    case "1": csv = true; selected = true; break;
+                    case "2": selected = true; break;
+                    default: Console.WriteLine("Incorrect choice format! Try again."); break;
+                }
+            }
+            if (csv) manager = new CsvManager("../../../Book1.csv");
+            else manager = new JsonManager("../../../Book2.json");
+            Console.WriteLine();
+
+            var phoneBook = manager.Read();
             bool exit = false;
             while (!exit)
             {
@@ -24,12 +44,12 @@
                 switch (choice)
                 {
                     case "1": Functions.PrintBook(phoneBook); break;
-                    case "2": Functions.AddPerson(phoneBook); break;
-                    case "3": Functions.ChangeNumber(phoneBook); break;
-                    case "4": Functions.RemovePerson(phoneBook); break;
-                    case "5": Functions.RenamePerson(phoneBook); break;
-                    case "6": Functions.ChangeEmail(phoneBook); break;
-                    case "7": Functions.DeleteEmail(phoneBook); break;
+                    case "2": manager.AddPerson(phoneBook); break;
+                    case "3": manager.ChangeNumber(phoneBook); break;
+                    case "4": manager.RemovePerson(phoneBook); break;
+                    case "5": manager.RenamePerson(phoneBook); break;
+                    case "6": manager.ChangeEmail(phoneBook); break;
+                    case "7": manager.DeleteEmail(phoneBook); break;
                     case "8": Functions.FirstLetter(phoneBook); break;
                     case "9": exit = true; break;
                     default: Console.WriteLine("Incorrect choice format."); break;
